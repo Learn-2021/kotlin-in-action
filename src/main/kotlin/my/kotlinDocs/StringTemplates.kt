@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 fun main() {
     var a = 1

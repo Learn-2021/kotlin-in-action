@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 fun main() {
     //iterate over a collection.

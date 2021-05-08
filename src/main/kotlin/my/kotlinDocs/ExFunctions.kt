@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 //A function with two 'Int' parameters and 'Int' return type.
 fun sum(a: Int, b: Int): Int {

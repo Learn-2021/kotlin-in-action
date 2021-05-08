@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 //You can declare variables at the top level.
 val PI = 3.14

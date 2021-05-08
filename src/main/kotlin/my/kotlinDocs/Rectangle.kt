@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 /*
 *  Classes are final by default;

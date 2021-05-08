@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 fun main() {
     //Check if a number is within a range using 'in' operator

@@ -1,4 +1,4 @@
-package my.demo
+package my.kotlinDocs
 
 /*
 * 'is'연산자는 expression이 그 타입의 인스턴스인지 체크한다.
