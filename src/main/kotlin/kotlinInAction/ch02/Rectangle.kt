@@ -1,4 +1,4 @@
-package kotlinInAction
+package kotlinInAction.ch02
 
 import java.util.*
 

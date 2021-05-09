@@ -1,6 +1,6 @@
-package kotlinInAction
+package kotlinInAction.ch02
 
-import kotlinInAction.Color.*
+import kotlinInAction.ch02.Color.*
 
 
 enum class Color (val r: Int, val g: Int, val b: Int) {
