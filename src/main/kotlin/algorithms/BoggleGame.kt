@@ -2,8 +2,9 @@ package algorithms
 
 fun main() {
     val result = BoggleGame().hasWord(1, 1, "RETTY") // false
-    val result = BoggleGame().hasWord(1, 1, "PRETTY") // true
+    val result2 = BoggleGame().hasWord(1, 1, "PRETTY") // true
     println(result)
+    println(result2)
 }
 
 class BoggleGame {
