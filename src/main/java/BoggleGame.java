@@ -41,8 +41,6 @@ public class BoggleGame {
     }
 
     private boolean inRange(int y, int x) {
-        if ((y >= 5 || 0 > y) || (x >= 5 || 0 > x))
-            return false;
-        return true;
+        return !((y >= 5 || 0 > y) || (x >= 5 || 0 > x));
     }
 }
