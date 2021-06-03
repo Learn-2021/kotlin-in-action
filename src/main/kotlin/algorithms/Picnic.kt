@@ -1,5 +1,7 @@
 package algorithms
 
+import java.util.*
+
 /**
  * 안드로메다 유치원에서 다음 주 소풍을 떠나는데,
  * 소풍 때 학생을 두 명씩 짝 지어 행동하게 하려고 한다.
@@ -13,7 +15,7 @@ package algorithms
  *
  * 입력
  * 첫 줄에 테스트 케이스의 수 C(C≤50)가 주어진다.
- * 각 테스트 케이스 첫 줄에 학생의 수 n(2 ≤ n ≤ 10)과 친구 상의 수 m(0 ≤ m ≤ n(n-1)/2)이 주어진다.
+ * 각 테스트 케이스 첫 줄에 학생의 수 n(2 ≤ n ≤ 10)과 친구 쌍의 수 m(0 ≤ m ≤ n(n-1)/2)이 주어진다.
  * 그 다음 줄에 m개의 정수 쌍으로 서로 친구인 두 학생의 번호가 주어진다.
  * 번호는 모두 0부터 n-1사이의 정수이고 같은 쌍은 입력에 두 번 주어지지 않는다.
  * 학생의 수는 항상 짝수다.
@@ -22,9 +24,9 @@ package algorithms
  * 각 테스트 케이스마다 한 줄에 모든 학생을 친구끼리만 짝 지을 수 있는 방법의 수를 출력한다.
  *
  * 예제 입력
- * 3
- * 2 1
- * 0 1
+ * Test Case                   : 3
+ * 학생 - 친구 쌍의 수             : 2 1
+ * 서로 친구인 두 학생의 번호(0~n-1) : 0 1
  * 4 6
  * 0 1 1 2 2 3 3 0 0 2 1 3
  * 6 10
@@ -58,7 +60,7 @@ class Picnic {
     private var areFriends:Array<Array<Boolean>> = arrayOf()
 
     //taken[i] = i번째 학생이 짝을 이미 찾았으면 true, 아니면 false
-    fun countPairings(taken:BooleanArray): Int {
+    fun countPairings1(taken:BooleanArray): Int {
         //기저 사례: 모든 학생이 짝을 찾았으면 한 가지 방법을 찾았으니 종료한다.
         var finished = true
 
@@ -73,11 +75,50 @@ class Picnic {
                 if (!taken[i] && !taken[j] && areFriends[i][j]) {
                     taken[i] = true
                     taken[j] = true
-                    ret += countPairings(taken)
+                    ret += countPairings1(taken)
                     taken[i] = false
                     taken[j] = false
                 }
             }
+        }
+        return ret
+    }
+
+    /**
+     * 위 코드는 잘 살펴보면 두 가지 문제를 찾아볼 수 있다.
+     *
+     * - 같은 학생 쌍을 두 번 짝지어 준다. 예를 들어 (0, 1)과 (1, 0)을 따로 세고 있다.
+     * - 다른 순서로 학생을 짝지어 주는 것을 서로 다른 경우로 세고 있다. 예를 들어 (0,1) 후에 (2,3)을 짝지어 주는 것과 (2,3) 후에 (0,1)을 짝지어주는 것은 완전히 같은 방법인데 다른 경우로 세고 있다.
+     *
+     * 실질적으로 같은 답을 중복으로 세는 상황은 경우의 수를 셀 때 흔하게 마주치는 상황이다. 이 문제를 해결하기 위한 좋은 방법은 항상 특정 형태의 답만 세는 것이다.
+     * 이를 테면 같은 답 중에서 사전순으로 가장 먼저 오는 답 하나만을 센다.이 속성을 강제하기 위해 각 단계에 남아있는 학생 중 가장 번호가 빠른 학생의 짝을 찾아주도록 하면 된다.
+     * 이렇게 하면 앞의 두 가지 문제를 모두 해결할 수 있음을 쉽게 알 수 있다. 가장 번호가 빠른 학생의 짝은 그보다 번호가 뒤일 수밖에 없으므로 (1, 0)과 같은 짝은 나올 수 없다.
+     * 또한 항상 번호가 빠른 학생부터 짝을 짓기 때문에 (2,3), (0,1)의 순서로 짝을 지어줄 일도 없다. 이렇게 다시 구현해보자.
+     */
+    fun countPairings2(taken: BooleanArray): Int {
+        //남은 학생들 중 가장 번호가 빠른 학생을 찾는다.
+        var firstFree = -1;
+
+        for (i in 0..n) {
+            if (!taken[i]) {
+                firstFree = i
+                break
+            }
+        }
+
+        //기저사례: 모든 학생이 짝을 찾았으면 한 가지 방법을 찾았으니 종료한다.
+        if (firstFree == -1) return 1
+
+        var ret = 0
+
+        //이 학생과 짝지을 학생을 결정한다.
+        for (pairWith in firstFree+1..n) {
+            taken[pairWith] = true
+            taken[firstFree]= true
+
+            ret += countPairings2(taken)
+            taken[pairWith] = false
+            taken[firstFree] = false
         }
         return ret
     }
