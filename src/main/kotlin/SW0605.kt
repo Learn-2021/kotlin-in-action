@@ -2,29 +2,25 @@ import java.util.*
 
 fun main() {
     val sc = Scanner(System.`in`)
-    var testCase = sc.nextInt()
+    val tc = sc.nextInt() //Test Case의 수
 
-    for (testCount in 1..testCase) {
+    for (t in 1..tc) {
+        var N = sc.nextInt()
         val list = mutableListOf<Int>()
-        for (n in 0 until sc.nextInt()) {
+
+        for (n in 0 until N)
             list.add(sc.nextInt())
-        }
+
+        var max = list.last()
         var sum = 0L
-        var max = 0
 
-        for (i in list.lastIndex downTo 0) {
-            if (max < list[i]) {
+        for (i in list.lastIndex-1 downTo 0) {
+            if (max < list[i])
                 max = list[i]
-            } else {
-                var num = max - list[i]
-                sum += num
-            }
+            else
+                sum += (max - list[i])
         }
 
-        println("#$testCount $sum")
+        println("#$t $sum")
     }
-}
-
-fun calculate(index: Int, list: Int) {
-
 }
