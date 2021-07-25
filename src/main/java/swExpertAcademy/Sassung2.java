@@ -34,7 +34,7 @@ import java.util.*;
  * 각 테스트 케이스마다 '#x'(x는 테스트케이스 번호를 의미)를 출력하고,
  * 각 테스트케이스마다 지학이의 최종 점수와 등수를 공백으로 구분해서 출력한다.
  */
-public class Sassung {
+public class Sassung2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int Tc = sc.nextInt(); // Tc: 테스트케이스의 수
@@ -49,7 +49,6 @@ public class Sassung {
             // 2. 각 문제 점수 구하기. 0이 나올 때마다 1점 증가
             Map<Integer, List<Integer>> info = new HashMap<>();
             Map<Integer, Integer> scores = new HashMap<>();
-
             for (int j = 1; j <= N; j++) {
                 List<Integer> corrects = new ArrayList<>();
                 for (int k = 1; k <= T; k++) {
@@ -72,8 +71,8 @@ public class Sassung {
 
             //  모든 참가자의 점수, 푼 문제의 수를 구한다.
             //  저장 형태 : 참가자 번호, {총점, 맞춘 문제의 수}
-            Map<Integer, Integer> totalScores = new HashMap<>();
-            Map<Integer, Integer> totalCounts = new HashMap<>();
+            List<Participant> participants = new ArrayList<>();
+
             info.forEach((key, value) -> {
                 int score = 0;
                 int count = 0;
@@ -84,31 +83,51 @@ public class Sassung {
                         count += 1;
                     }
                 }
-
-                totalScores.put(key, score);
-                totalCounts.put(key, count);
+                participants.add(new Participant(key, score, count));
             });
 
-            List<Integer> keySets = new ArrayList<>(totalScores.keySet());
-            Collections.sort(keySets, (o1, o2) -> {
-                if (totalScores.get(o1) != totalScores.get(o2))
-                    return totalScores.get(o1) < totalScores.get(o2) ? 1 : -1;
+            Collections.sort(participants, (o1, o2) -> {
+                if (o1.score != o2.score)
+                    return o1.score < o2.score ? 1 : -1;
                 else {
-                    if (totalCounts.get(o1) == totalCounts.get(o2))
-                        return o1 > o2 ? 1 : -1;
-                    return totalCounts.get(o1) > totalCounts.get(o2) ? 1 : -1;
+                    if (o1.count == o2.count)
+                        return o1.id > o2.id ? 1 : -1;
+                    return o1.count > o2.count ? 1 : -1;
                 }
-
             });
 
-            int rank = 0;
-            for (int number : keySets) {
+            participants.sort(comparator);
+
+            int rank = 1;
+            for (Participant participant : participants) {
+                if (participant.id == P)
+                    System.out.println(String.format("#%d %d %d", i, participant.score, rank));
                 rank++;
-                if (number == P)
-                    System.out.println(String.format("#%d %d %d", i, totalScores.get(number), rank));
             }
         }
     }
+
+    static class Participant {
+        int id;
+        int score;
+        int count;
+
+        Participant(int id, int score, int count) {
+            this.id = id;
+            this.score = score;
+            this.count = count;
+        }
+    }
+
+    static Comparator<Participant> comparator = (o1, o2) -> {
+        if (o1.score != o2.score)
+            return o1.score < o2.score ? 1 : -1;
+        else {
+            if (o1.count == o2.count)
+                return o1.id > o2.id ? 1 : -1;
+            return o1.count > o2.count ? 1 : -1;
+        }
+    };
 }
 
 

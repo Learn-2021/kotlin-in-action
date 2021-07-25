@@ -1,6 +1,7 @@
 package swExpertAcademy;
 
-import java.util.*;
+
+import java.util.Scanner;
 
 /**
  *  경표는 아래와 같이 삼각형 모양으로 숫자를 쌓기로 했다.
